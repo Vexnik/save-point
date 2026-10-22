@@ -222,6 +222,17 @@
 
   /* ---------- Views and dialogs ---------- */
 
+  // Keeps the visual "active" style and the screen-reader state in sync.
+  function setActive(el, on, attr = "aria-current") {
+    el.classList.toggle("active", on);
+    if (attr === "aria-current") {
+      if (on) el.setAttribute("aria-current", "page");
+      else el.removeAttribute("aria-current");
+    } else {
+      el.setAttribute(attr, String(on));
+    }
+  }
+
   function setView(view) {
     currentView = view;
     journalMode = false;
@@ -229,8 +240,8 @@
     $("journal-view").hidden = true;
     $("current-section").textContent = view === "all" ? "ALL GAMES" : view.toUpperCase();
     $("library-title").innerHTML = `${view === "all" ? "Your library" : escapeHTML(view)}<span class="heading-dot">.</span>`;
-    document.querySelectorAll(".nav-item[data-view]").forEach((b) => b.classList.toggle("active", b.dataset.view === view));
-    $("journal-nav").classList.remove("active");
+    document.querySelectorAll(".nav-item[data-view]").forEach((b) => setActive(b, b.dataset.view === view));
+    setActive($("journal-nav"), false);
     renderGames();
   }
 
@@ -239,8 +250,8 @@
     $("library-view").hidden = true;
     $("journal-view").hidden = false;
     $("current-section").textContent = "JOURNAL";
-    document.querySelectorAll(".nav-item[data-view]").forEach((b) => b.classList.remove("active"));
-    $("journal-nav").classList.add("active");
+    document.querySelectorAll(".nav-item[data-view]").forEach((b) => setActive(b, false));
+    setActive($("journal-nav"), true);
     renderEntries();
   }
 
@@ -335,7 +346,7 @@
   document.querySelectorAll("[data-platform]").forEach((b) =>
     b.addEventListener("click", () => {
       currentPlatform = b.dataset.platform;
-      document.querySelectorAll("[data-platform]").forEach((x) => x.classList.toggle("active", x === b));
+      document.querySelectorAll("[data-platform]").forEach((x) => setActive(x, x === b, "aria-pressed"));
       renderGames();
     })
   );
@@ -436,12 +447,7 @@
     if (event.target.files[0]) importData(event.target.files[0]);
   });
 
-  // Visible Import button next to Add, so import works on touch screens too.
-  const importButton = document.createElement("button");
-  importButton.className = "ghost-btn";
-  importButton.textContent = "↧ Import";
-  importButton.addEventListener("click", () => $("import-file").click());
-  document.querySelector(".top-actions")?.insertBefore(importButton, $("add-btn"));
+  $("import-btn").addEventListener("click", () => $("import-file").click());
 
   // Keep multiple open tabs in sync.
   window.addEventListener("storage", (event) => {
@@ -452,52 +458,12 @@
   });
 
   load();
-  renderGames();
+  setView("all");
+  document.querySelectorAll("[data-platform]").forEach((b) => setActive(b, b.dataset.platform === currentPlatform, "aria-pressed"));
   renderEntries();
-})();
-ment.querySelectorAll("[data-platform]").forEach(b=>b.addEventListener("click",()=>{
-    currentPlatform=b.dataset.platform;
-    document.querySelectorAll("[data-platform]").forEach(x=>x.classList.toggle("active",x===b));
-    renderGames();
-  }));
-  document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>$(b.dataset.close).close()));
-  $("game-form").addEventListener("submit",event=>{
-    event.preventDefault();
-    const id=$("game-id").value, old=games.find(g=>g.id===id), now=new Date().toISOString();
-    const game={id:id||uid(),title:$("game-title").value.trim(),platform:$("game-platform").value,status:$("game-status").value,hours:Math.max(0,Number($("game-hours").value)||0),rating:$("game-rating").value,cover:safeImageUrl($("game-cover").value.trim()),note:$("game-note").value.trim(),created:old?.created||now,updated:now};
-    if(!game.title)return;
-    if(old)games=games.map(g=>g.id===id?game:g);else games.push(game);
-    save();$("game-dialog").close();renderGames();if(journalMode)renderEntries();
-  });
-  $("entry-form").addEventListener("submit",event=>{
-    event.preventDefault();
-    const id=$("entry-id").value,old=entries.find(e=>e.id===id),now=new Date().toISOString();
-    const entry={id:id||uid(),title:$("entry-title").value.trim(),gameId:$("entry-game").value,body:$("entry-body").value.trim(),created:old?.created||now,updated:now};
-    if(!entry.title||!entry.body)return;
-    if(old)entries=entries.map(e=>e.id===id?entry:e);else entries.push(entry);
-    save();$("entry-dialog").close();renderEntries();renderGames();
-  });
-  $("game-grid").addEventListener("click",event=>{
-    const button=event.target.closest("button");if(!button)return;
-    if(button.dataset.editGame)openGame(button.dataset.editGame);
-    if(button.dataset.journalGame)openEntry("",button.dataset.journalGame);
-    if(button.dataset.deleteGame){
-      const game=games.find(g=>g.id===button.dataset.deleteGame);if(!game)return;
-      if(!confirm(`Delete "${game.title}"? Related journal entries will stay, but won't be linked to this game.`))return;
-      games=games.filter(g=>g.id!==game.id);save();renderGames();if(journalMode)renderEntries();
-    }
-  });
-  $("journal-list").addEventListener("click",event=>{
-    const button=event.target.closest("button");if(!button)return;
-    if(button.dataset.editEntry)openEntry(button.dataset.editEntry);
-    if(button.dataset.deleteEntry){const e=entries.find(x=>x.id===button.dataset.deleteEntry);if(e&&confirm(`Delete "${e.title}"?`)){entries=entries.filter(x=>x.id!==e.id);save();renderEntries();}}
-  });
-  $("export-btn").addEventListener("click",exportData);
-  $("export-btn").addEventListener("contextmenu",event=>{event.preventDefault();$("import-file").click();});
-  $("export-btn").title="Click to export a backup. Right-click to import one on desktop.";
-  $("import-file").addEventListener("change",event=>{if(event.target.files[0])importData(event.target.files[0]);});
-  // Also expose import in a predictable place for touch screens.
-  const importButton=document.createElement("button");importButton.className="ghost-btn";importButton.textContent="↧ Import";importButton.addEventListener("click",()=>$("import-file").click());$("topbar-placeholder");
-  document.querySelector(".top-actions").insertBefore(importButton,$("add-btn"));
-  load();renderGames();renderEntries();
+
+  // Offline support. Skipped on file:// where service workers aren't allowed.
+  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+  }
 })();

@@ -4,11 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#111318">
+  <meta name="color-scheme" content="dark">
   <meta name="description" content="A quiet little home for your gaming backlog, play sessions, and reviews.">
   <title>Save Point — Gaming Backlog & Journal</title>
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <noscript>Save Point needs JavaScript to run. Your data stays in this browser.</noscript>
   <div class="app-shell">
     <aside class="sidebar">
       <a class="brand" href="#" aria-label="Save Point home"><span class="brand-mark">S</span><span><strong>save point</strong><small>YOUR PERSONAL GAME LOG</small></span></a>
@@ -32,7 +37,7 @@
     <main class="main">
       <header class="topbar">
         <div class="breadcrumb">YOUR LIBRARY <span>/</span> <strong id="current-section">ALL GAMES</strong></div>
-        <div class="top-actions"><button class="ghost-btn" id="export-btn" title="Export your data">↥ Export</button><button class="primary-btn" id="add-btn">＋ Add a game</button></div>
+        <div class="top-actions"><button class="ghost-btn" id="import-btn" title="Import a backup" aria-label="Import a backup">↧ <span class="btn-label">Import</span></button><button class="ghost-btn" id="export-btn" title="Export a backup" aria-label="Export a backup">↥ <span class="btn-label">Export</span></button><button class="primary-btn" id="add-btn">＋ Add a game</button></div>
       </header>
 
       <section class="hero">

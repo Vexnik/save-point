@@ -1,0 +1,12 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Dependencies and logs (if you add tooling later)
+node_modules/
+*.log
+
+# Exported Save Point backups contain personal data
+save-point-backup-*.json

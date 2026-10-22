@@ -21,6 +21,7 @@ A small, responsive web app for tracking your games and keeping the moments wort
 - Imported and saved data is validated, so a hand-edited or damaged file can't break the app.
 - Stays in sync across open tabs.
 - Responsive layout for desktop and mobile.
+- Installable and works offline (PWA): add it to your home screen or desktop from your browser menu.
 
 ## Run it locally
 
@@ -48,6 +49,7 @@ Everything lives in your browser's `localStorage` on the device you use. Nothing
 - If saved data ever becomes unreadable, the app starts empty but keeps the damaged copy under the `save-point-data-v1-unreadable` storage key instead of overwriting it.
 - Cover images are optional external URLs. If a URL stops working, the game entry remains intact.
 - Clearing your browser's site data deletes your library, so export first.
+- The offline cache only holds the app itself, never your data, and cover images still need a connection.
 
 ## Project structure
 
@@ -56,6 +58,9 @@ Everything lives in your browser's `localStorage` on the device you use. Nothing
 | `index.html` | Page markup and dialogs |
 | `styles.css` | Styling and responsive layout |
 | `app.js` | App logic: storage, validation, rendering, import/export |
+| `sw.js` | Service worker for offline support (bump `CACHE` when you add files) |
+| `manifest.webmanifest` | Install metadata for the PWA |
+| `icons/` | App and favicon icons |
 
 ## Roadmap
 
@@ -63,7 +68,6 @@ Everything lives in your browser's `localStorage` on the device you use. Nothing
 - Backlog goals and completion dates.
 - Custom platforms and genres.
 - Review templates with separate verdicts for gameplay, story, visuals, and audio.
-- Installable offline app (PWA).
 - Optional cloud sync, once a backend and authentication are configured.
 
 Ideas and bug reports are welcome in [Issues](https://github.com/Vexnik/save-point/issues).

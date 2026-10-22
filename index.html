@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111318">
+  <meta name="description" content="A quiet little home for your gaming backlog, play sessions, and reviews.">
+  <title>Save Point — Gaming Backlog & Journal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Save Point home"><span class="brand-mark">S</span><span><strong>save point</strong><small>YOUR PERSONAL GAME LOG</small></span></a>
+      <div class="side-label">LIBRARY</div>
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav-item active" data-view="all"><span>▦</span> All games <b id="nav-all">0</b></button>
+        <button class="nav-item" data-view="Playing"><span>◉</span> Playing <b id="nav-playing">0</b></button>
+        <button class="nav-item" data-view="Backlog"><span>◷</span> Backlog <b id="nav-backlog">0</b></button>
+        <button class="nav-item" data-view="Completed"><span>✓</span> Completed <b id="nav-completed">0</b></button>
+        <button class="nav-item" data-view="On hold"><span>Ⅱ</span> On hold <b id="nav-hold">0</b></button>
+        <button class="nav-item" data-view="Dropped"><span>×</span> Dropped <b id="nav-dropped">0</b></button>
+      </nav>
+      <div class="side-label journal-label">YOUR SPACE</div>
+      <button class="nav-item" id="journal-nav"><span>✎</span> Journal</button>
+      <div class="sidebar-bottom">
+        <div class="mini-quote">“Games are meant to be played, not collected like digital dragons.”</div>
+        <span class="version">SAVE POINT · v1.0</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="breadcrumb">YOUR LIBRARY <span>/</span> <strong id="current-section">ALL GAMES</strong></div>
+        <div class="top-actions"><button class="ghost-btn" id="export-btn" title="Export your data">↥ Export</button><button class="primary-btn" id="add-btn">＋ Add a game</button></div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-copy"><div class="eyebrow"><span class="pulse"></span> YOUR GAME SPACE</div><h1>Every game has<br>its <em>own story.</em></h1><p>A home for the games you play, the ones you’ll get to, and the memories they leave behind.</p></div>
+        <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="pixel-star">✦</div><div class="game-card-art"><span>INSERT<br>COIN</span><div class="art-line"></div><b>PRESS START</b></div><div class="tiny-star">✧</div></div>
+      </section>
+
+      <section class="stats" aria-label="Library statistics">
+        <article class="stat-card"><span class="stat-icon violet">▦</span><div><small>TOTAL LIBRARY</small><strong id="stat-total">0</strong><span>games collected</span></div></article>
+        <article class="stat-card"><span class="stat-icon green">◉</span><div><small>IN PROGRESS</small><strong id="stat-playing">0</strong><span>worlds explored</span></div></article>
+        <article class="stat-card"><span class="stat-icon gold">✓</span><div><small>COMPLETED</small><strong id="stat-completed">0</strong><span>stories finished</span></div></article>
+        <article class="stat-card"><span class="stat-icon pink">✎</span><div><small>JOURNAL ENTRIES</small><strong id="stat-entries">0</strong><span>moments remembered</span></div></article>
+      </section>
+
+      <section id="library-view">
+        <div class="section-heading"><div><div class="eyebrow">THE COLLECTION</div><h2 id="library-title">Your library<span class="heading-dot">.</span></h2></div><div class="view-tools"><label class="search-box"><span>⌕</span><input id="search" type="search" placeholder="Find a game..." aria-label="Search games"></label><select id="sort" aria-label="Sort games"><option value="updated">Recently updated</option><option value="title">Title A–Z</option><option value="rating">Highest rated</option><option value="hours">Most played</option></select></div></div>
+        <div class="filters" id="platform-filters"><button class="filter active" data-platform="All">All platforms</button><button class="filter" data-platform="Nintendo Switch">Switch</button><button class="filter" data-platform="Nintendo 3DS">3DS</button><button class="filter" data-platform="PC">PC</button><button class="filter" data-platform="PlayStation">PlayStation</button><button class="filter" data-platform="Xbox">Xbox</button><button class="filter" data-platform="Other">Other</button></div>
+        <div id="game-grid" class="game-grid"></div>
+        <div id="empty-state" class="empty-state"><div class="empty-icon">✧</div><h3>Your next favorite is waiting.</h3><p>Add a game to start building your library. No backlog shame allowed.</p><button class="primary-btn" id="empty-add-btn">＋ Add your first game</button></div>
+      </section>
+
+      <section id="journal-view" hidden>
+        <div class="section-heading"><div><div class="eyebrow">FIELD NOTES</div><h2>Your journal<span class="heading-dot">.</span></h2></div><button class="primary-btn" id="journal-add-btn">＋ New entry</button></div>
+        <p class="journal-intro">Little thoughts, memorable moments, and the occasional “I can’t believe that ending.”</p>
+        <div id="journal-list" class="journal-list"></div>
+        <div id="journal-empty" class="empty-state"><div class="empty-icon">✎</div><h3>Leave a note for future you.</h3><p>Capture a moment before the credits—and your memory—roll away.</p><button class="primary-btn" id="journal-empty-add">＋ Write an entry</button></div>
+      </section>
+      <footer><span>MADE FOR THE LOVE OF PLAY</span><span>Your data stays in this browser, unless you export it.</span></footer>
+    </main>
+  </div>
+
+  <dialog id="game-dialog" class="modal">
+    <form id="game-form" method="dialog">
+      <div class="modal-head"><div><div class="eyebrow">GROW YOUR LIBRARY</div><h2 id="game-modal-title">Add a game</h2></div><button type="button" class="close-btn" data-close="game-dialog" aria-label="Close">×</button></div>
+      <input type="hidden" id="game-id">
+      <div class="form-grid">
+        <label class="full">Game title *<input id="game-title" required maxlength="100" placeholder="e.g. The Legend of Zelda: Echoes of Wisdom"></label>
+        <label>Platform<select id="game-platform"><option>Nintendo Switch</option><option>Nintendo 3DS</option><option>PC</option><option>PlayStation</option><option>Xbox</option><option>Mobile</option><option>Other</option></select></label>
+        <label>Status<select id="game-status"><option>Backlog</option><option>Playing</option><option>Completed</option><option>On hold</option><option>Dropped</option></select></label>
+        <label>Hours played<input id="game-hours" type="number" min="0" max="99999" step="0.5" value="0"></label>
+        <label>Personal rating<select id="game-rating"><option value="">Not rated</option><option value="Loved it">Loved it</option><option value="Liked it">Liked it</option><option value="It was okay">It was okay</option><option value="Disliked it">Disliked it</option><option value="Not for me">Not for me</option></select></label>
+        <label class="full">Cover image URL (optional)<input id="game-cover" type="url" placeholder="https://..."></label>
+        <label class="full">Quick note<textarea id="game-note" rows="3" maxlength="1000" placeholder="Why is it on your list? What do you think so far?"></textarea></label>
+      </div>
+      <div class="modal-actions"><button type="button" class="ghost-btn" data-close="game-dialog">Cancel</button><button type="submit" class="primary-btn">Save game</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="entry-dialog" class="modal">
+    <form id="entry-form" method="dialog">
+      <div class="modal-head"><div><div class="eyebrow">SAVE THE MOMENT</div><h2 id="entry-modal-title">New journal entry</h2></div><button type="button" class="close-btn" data-close="entry-dialog" aria-label="Close">×</button></div>
+      <input type="hidden" id="entry-id">
+      <div class="form-grid">
+        <label class="full">Entry title *<input id="entry-title" required maxlength="120" placeholder="That one boss fight..."></label>
+        <label class="full">Related game<select id="entry-game"><option value="">General gaming thoughts</option></select></label>
+        <label class="full">Your thoughts *<textarea id="entry-body" required rows="7" maxlength="5000" placeholder="What happened? How did it make you feel? Write it down before your brain replaces it with the Windows shutdown sound."></textarea></label>
+      </div>
+      <div class="modal-actions"><button type="button" class="ghost-btn" data-close="entry-dialog">Cancel</button><button type="submit" class="primary-btn">Save entry</button></div>
+    </form>
+  </dialog>
+  <input type="file" id="import-file" accept="application/json,.json" hidden>
+  <script src="app.js"></script>
+</body>
+</html>

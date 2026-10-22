@@ -1,6 +1,15 @@
 # Save Point — Gaming Backlog & Journal
 
-A small, responsive web app for tracking your games and keeping the moments worth remembering. Built with plain HTML, CSS, and JavaScript—no framework, build step, account, or paid service required.
+[![CI](https://github.com/Vexnik/save-point/actions/workflows/ci.yml/badge.svg)](https://github.com/Vexnik/save-point/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+A small, responsive web app for tracking your games and keeping the moments worth remembering. Built with plain HTML, CSS, and JavaScript: no framework, build step, account, or paid service required.
+
+**Live demo:** https://vexnik.github.io/save-point/
+
+<!-- Add a screenshot to docs/screenshot.png, then uncomment the line below:
+![Save Point screenshot](docs/screenshot.png)
+-->
 
 ## Features
 
@@ -9,8 +18,9 @@ A small, responsive web app for tracking your games and keeping the moments wort
 - Filter by status and platform; search and sort your library.
 - Write journal entries and link them to games.
 - Export your library and journal to a JSON backup, and import a previous backup.
+- Imported and saved data is validated, so a hand-edited or damaged file can't break the app.
+- Stays in sync across open tabs.
 - Responsive layout for desktop and mobile.
-- Data is stored in the browser with `localStorage`.
 
 ## Run it locally
 
@@ -21,28 +31,42 @@ That's it. No `npm install`, no complicated ritual, no summoning circle.
 
 For a local development server, you can also use VS Code's **Live Server** extension.
 
-## Publish with GitHub Pages
+## Publish your own copy with GitHub Pages
 
-1. Create a GitHub repository named `save-point`.
-2. Upload `index.html`, `styles.css`, `app.js`, and `README.md` to the repository's root.
-3. Open **Settings → Pages**.
-4. Under **Build and deployment**, select **Deploy from a branch**.
-5. Choose the `main` branch and `/ (root)`, then click **Save**.
-6. Wait a minute and open the URL GitHub Pages displays.
+1. **Fork** this repository (or create a new one and upload `index.html`, `styles.css`, `app.js`, and `README.md`).
+2. Open **Settings → Pages**.
+3. Under **Build and deployment**, select **Deploy from a branch**.
+4. Choose the `main` branch and `/ (root)`, then click **Save**.
+5. Wait a minute, then open `https://<your-username>.github.io/<repo-name>/`.
 
-## Important data note
+## Your data and privacy
 
-Your data lives in the browser on the device where you use the app. It does **not** automatically sync between devices or browsers. Use **Export** regularly to save a JSON backup somewhere safe. Importing a backup replaces the current browser data, after confirmation.
+Everything lives in your browser's `localStorage` on the device you use. Nothing is sent to a server, and there are no accounts or tracking.
 
-Cover images are optional external URLs. If a URL stops working, the game entry remains intact.
+- Data does **not** sync between devices or browsers. Use **Export** regularly to keep a JSON backup somewhere safe.
+- **Import** replaces the data currently saved in the browser, after confirmation. Invalid items in a backup are skipped, and the confirmation tells you how many.
+- If saved data ever becomes unreadable, the app starts empty but keeps the damaged copy under the `save-point-data-v1-unreadable` storage key instead of overwriting it.
+- Cover images are optional external URLs. If a URL stops working, the game entry remains intact.
+- Clearing your browser's site data deletes your library, so export first.
 
-## Suggested next upgrades
+## Project structure
+
+| File | Purpose |
+| --- | --- |
+| `index.html` | Page markup and dialogs |
+| `styles.css` | Styling and responsive layout |
+| `app.js` | App logic: storage, validation, rendering, import/export |
+
+## Roadmap
 
 - Game cover lookup through a game database API.
 - Backlog goals and completion dates.
 - Custom platforms and genres.
 - Review templates with separate verdicts for gameplay, story, visuals, and audio.
+- Installable offline app (PWA).
 - Optional cloud sync, once a backend and authentication are configured.
+
+Ideas and bug reports are welcome in [Issues](https://github.com/Vexnik/save-point/issues).
 
 ## License
 

@@ -1,15 +1,17 @@
-# Save Point — Gaming Backlog & Journal
+<p align="center">
+  <img src="icons/icon-192.png" alt="Save Point app icon" width="96" height="96">
+</p>
 
-[![CI](https://github.com/Vexnik/save-point/actions/workflows/ci.yml/badge.svg)](https://github.com/Vexnik/save-point/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+<h1 align="center">Save Point — Gaming Backlog & Journal</h1>
+
+<p align="center">
+  <a href="https://github.com/Vexnik/save-point/actions/workflows/ci.yml"><img src="https://github.com/Vexnik/save-point/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+</p>
 
 A small, responsive web app for tracking your games and keeping the moments worth remembering. Built with plain HTML, CSS, and JavaScript: no framework, build step, account, or paid service required.
 
 **Live demo:** https://vexnik.github.io/save-point/
-
-<!-- Add a screenshot to docs/screenshot.png, then uncomment the line below:
-![Save Point screenshot](docs/screenshot.png)
--->
 
 ## Features
 
